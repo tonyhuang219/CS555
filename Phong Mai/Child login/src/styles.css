@@ -1,0 +1,89 @@
+/* Loginpagechild */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap");
+
+p {
+  margin: 0;
+}
+
+.clip-contents {
+  overflow: hidden;
+}
+
+.flex-col-hstart-vstart {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.flex-col-hcenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-hcenter {
+  justify-content: center;
+}
+
+.login-page-child {
+  position: relative;
+  background-color: rgba(255, 255, 255, 1);
+  width: 390px;
+  height: 844px;
+}
+
+.group-1064 {
+  position: absolute;
+  top: 271px;
+  none: 0px;
+  width: 367px;
+  height: 184px;
+}
+
+.group-847 {
+  margin-bottom: 66px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.rectangle-11 {
+  background-color: rgba(217, 217, 217, 1);
+  width: 85px;
+  border-radius: 15px;
+  margin-right: 9px;
+  height: 100%;
+}
+
+.rectangle-12 {
+  background-color: rgba(217, 217, 217, 1);
+  width: 85px;
+  border-radius: 15px;
+  height: 100%;
+}
+
+.rectangle-10 {
+  background-color: rgba(217, 217, 217, 1);
+  width: 173px;
+  height: 33px;
+}
+
+.txt-792 {
+  position: absolute;
+  top: 422px;
+  left: 103px;
+  font-size: 24px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  text-align: center;
+  width: 172px;
+  height: 34px;
+  word-wrap: break-word;
+}

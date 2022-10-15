@@ -1,0 +1,141 @@
+/* Loginpageparent */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap");
+
+p {
+  margin: 0;
+}
+
+.clip-contents {
+  overflow: hidden;
+}
+
+.flex-col-hstart-vstart {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-col-hcenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-hcenter {
+  justify-content: center;
+}
+
+.login-page-parent {
+  position: relative;
+  background-color: rgba(255, 255, 255, 1);
+  width: 390px;
+  height: 844px;
+}
+
+.rectangle-7 {
+  position: absolute;
+  top: 273px;
+  left: 39px;
+  background-color: rgba(217, 217, 217, 1);
+  width: 312px;
+  height: 57px;
+}
+
+.group-372 {
+  position: absolute;
+  top: 108px;
+  none: 0px;
+  width: 312px;
+  height: 334px;
+}
+
+.txt-440 {
+  font-size: 36px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  width: 128px;
+  height: 33px;
+  word-wrap: break-word;
+  margin-bottom: 14px;
+}
+
+.group-865 {
+  width: 100%;
+}
+
+.group-865 {
+  width: 100%;
+  height: 100%;
+}
+
+.group-6103 {
+  margin-bottom: 87px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.rectangle-5 {
+  background-color: rgba(217, 217, 217, 1);
+  height: 55px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.txt-237 {
+  font-size: 36px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  width: 192px;
+  height: 49px;
+  word-wrap: break-word;
+}
+
+.rectangle-8 {
+  background-color: rgba(217, 217, 217, 1);
+  width: 173px;
+  height: 33px;
+  margin-bottom: 15px;
+}
+
+.rectangle-9 {
+  background-color: rgba(217, 217, 217, 1);
+  width: 173px;
+  height: 33px;
+}
+
+.txt-828 {
+  position: absolute;
+  top: 361px;
+  left: 107px;
+  font-size: 24px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  text-align: center;
+  width: 172px;
+  height: 34px;
+  word-wrap: break-word;
+}
+
+.txt-037 {
+  position: absolute;
+  top: 409px;
+  left: 107px;
+  font-size: 24px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  text-align: center;
+  width: 172px;
+  height: 34px;
+  word-wrap: break-word;
+}
