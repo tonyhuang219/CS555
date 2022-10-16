@@ -8,12 +8,14 @@ import Tasks from './screens/Tasks';
 import signup from './screens/signup';
 import SettingsScreen from './screens/SettingsScreen';
 import CalendarScreen from './screens/CalendarScreen';
+import AchievementScreen from './screens/AchievementScreen';
 
 //Screen names
 const homeName = "Home";
 const detailsName = "Details";
 const settingsName = "Settings";
 const CalendarName = "Calendar";
+const AchievementName = "Achievement"
 
 const Tab = createBottomTabNavigator();
 
@@ -38,6 +40,8 @@ function MainContainer() {
             }
             else if (rn === CalendarName) {
               iconName = focused ? 'calendar' : 'calendar-outline';
+            } else if (rn === AchievementName) {
+              iconName = focused ? 'Trophy' : 'trophy-outline';
             }
 
             // You can return any component that you like here!
@@ -55,6 +59,7 @@ function MainContainer() {
         <Tab.Screen name={detailsName} component={signup} />
         <Tab.Screen name={settingsName} component={SettingsScreen} />
         <Tab.Screen name={CalendarName} component={CalendarScreen} />
+        <Tab.Screen name={AchievementName} component={AchievementScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
