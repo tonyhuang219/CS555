@@ -41,7 +41,7 @@ function MainContainer() {
             else if (rn === CalendarName) {
               iconName = focused ? 'calendar' : 'calendar-outline';
             } else if (rn === AchievementName) {
-              iconName = focused ? 'Trophy' : 'trophy-outline';
+              iconName = focused ? 'Trophy' : 'md-trophy-outline';
             }
 
             // You can return any component that you like here!
