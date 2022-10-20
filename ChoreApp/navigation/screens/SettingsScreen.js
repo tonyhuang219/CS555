@@ -1,69 +1,69 @@
-import * as React from 'react';
-import { View, Text } from 'react-native';
+import React from "react"
+import { StyleSheet, Image, Text, View, ImageBackground } from "react-native"
 
-export default function SettingsScreen({ navigation }) {
-    return (
-        <View style={styles.Settings}>
-          <Text style={styles.Txt561}>Settings</Text>
-          <View style={styles.Group290}>
-            <Image
-              style={styles.Image3}
-              source={{
-                uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/6bmqgh71zor-1%3A81?alt=media&token=3501d6fe-1720-4027-9760-32818dd53405",
-              }}
-            />
-            <Image
-              style={styles.Image1}
-              source={{
-                uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/6bmqgh71zor-1%3A79?alt=media&token=4d690bfc-0181-405f-a0b0-8c0a7528106d",
-              }}
-            />
-            <Image
-              style={styles.Image2}
-              source={{
-                uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/6bmqgh71zor-1%3A80?alt=media&token=3d57e3e3-b42e-4089-810c-637f265d646d",
-              }}
-            />
-            <View style={styles.Group1072}>
-              <Image
-                style={styles.Image4}
-                source={{
-                  uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/6bmqgh71zor-1%3A82?alt=media&token=bf37df4a-b9c0-4d29-993b-8a7cf7ada011",
-                }}
-              />
-            </View>
-          </View>
+export default function Settings() {
+  return (
+    <View style={styles.Settings}>
+      <Text style={styles.Txt315}>Settings</Text>
+      <View style={styles.Group5110}>
+        <Image
+          style={styles.Image3}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/s6dqa173m9l-1%3A81?alt=media&token=ee94f71e-fa85-4591-ac70-677c54fffb87",
+          }}
+        />
+        <Image
+          style={styles.Image1}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/s6dqa173m9l-1%3A79?alt=media&token=85d3313f-e9c9-4235-ba3f-8e45dbfd9486",
+          }}
+        />
+        <Image
+          style={styles.Image2}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/s6dqa173m9l-1%3A80?alt=media&token=c02072af-c1bb-49d4-935b-be7271d2750f",
+          }}
+        />
+        <View style={styles.Group493}>
           <Image
-            style={styles.Rectangle10}
+            style={styles.Image4}
             source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/6bmqgh71zor-28%3A3?alt=media&token=8d652c74-ab74-45cf-8c72-79707ab5ff4b",
+              uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/s6dqa173m9l-1%3A82?alt=media&token=e2c19944-39e3-4e41-8c93-c49e48bea4eb",
             }}
           />
-          <View style={styles.Rectangle15} />
-          <Text style={styles.Txt467}>General</Text>
-          <Image
-            style={styles.Rectangle18}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/6bmqgh71zor-28%3A24?alt=media&token=90204c31-c15a-4c54-aedf-838e11eb8b59",
-            }}
-          />
-          <Text style={styles.Txt2101}>Email Notifications</Text>
-          <View style={styles.Rectangle21} />
-          <View style={styles.Rectangle22} />
-          <View style={styles.Rectangle20} />
-          <View style={styles.Rectangle23} />
-          <Text style={styles.Txt219}>Notifications</Text>
-          <Image
-            style={styles.Rectangle16}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/6bmqgh71zor-28%3A20?alt=media&token=cba3547e-d563-464b-b09b-5c34062261c7",
-            }}
-          />
-          <View style={styles.Rectangle17} />
-          <Text style={styles.Txt557}>Family</Text>
-          <Text style={styles.Txt303}>Push Notifications</Text>
         </View>
-      )
+      </View>
+      <Image
+        style={styles.Rectangle10}
+        source={{
+          uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/s6dqa173m9l-28%3A3?alt=media&token=6e5a779c-cc5f-49cf-85b0-03050271ad22",
+        }}
+      />
+      <View style={styles.Rectangle15} />
+      <Text style={styles.Txt567}>General</Text>
+      <Image
+        style={styles.Rectangle18}
+        source={{
+          uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/s6dqa173m9l-28%3A24?alt=media&token=0ec2cd9e-db79-42b2-b6bc-7a8c0d31f9f1",
+        }}
+      />
+      <Text style={styles.Txt1085}>Email Notifications</Text>
+      <View style={styles.Rectangle21} />
+      <View style={styles.Rectangle22} />
+      <View style={styles.Rectangle20} />
+      <View style={styles.Rectangle23} />
+      <Text style={styles.Txt295}>Notifications</Text>
+      <Image
+        style={styles.Rectangle16}
+        source={{
+          uri: "https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/s6dqa173m9l-28%3A20?alt=media&token=d86e260c-f3cc-4c5b-b555-9894c0f3eb37",
+        }}
+      />
+      <View style={styles.Rectangle17} />
+      <Text style={styles.Txt880}>Family</Text>
+      <Text style={styles.Txt259}>Push Notifications</Text>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     width: 390,
     height: 844,
   },
-  Txt561: {
+  Txt315: {
     position: "absolute",
     top: 54,
     left: 23,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     width: 203,
     height: 62,
   },
-  Group290: {
+  Group5110: {
     display: "flex",
     flexDirection: "row",
     position: "absolute",
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 34,
   },
-  Group1072: {
+  Group493: {
     paddingTop: 4,
     paddingBottom: 4,
     paddingLeft: 4,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     height: 39,
     borderRadius: 10,
   },
-  Txt467: {
+  Txt567: {
     position: "absolute",
     top: 140,
     left: 99,
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     width: 319,
     height: 88,
   },
-  Txt2101: {
+  Txt1085: {
     position: "absolute",
     top: 385,
     left: 47,
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     height: 21,
     borderRadius: 10,
   },
-  Txt219: {
+  Txt295: {
     position: "absolute",
     top: 314,
     left: 23,
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     height: 39,
     borderRadius: 10,
   },
-  Txt557: {
+  Txt880: {
     position: "absolute",
     top: 244,
     left: 99,
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     width: 117,
     height: 21,
   },
-  Txt303: {
+  Txt259: {
     position: "absolute",
     top: 347,
     left: 47,
