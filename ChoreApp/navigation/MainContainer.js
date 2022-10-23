@@ -9,13 +9,17 @@ import signup from './screens/signup';
 import SettingsScreen from './screens/SettingsScreen';
 import CalendarScreen from './screens/CalendarScreen';
 import AchievementScreen from './screens/AchievementScreen';
+import login from './screens/login';
+import childlogin from './screens/childlogin';
 
 //Screen names
 const homeName = "Home";
 const detailsName = "Details";
 const settingsName = "Settings";
 const CalendarName = "Calendar";
-const AchievementName = "Achievement"
+const AchievementName = "Achievement";
+const parentLogin = "Login demo";
+const childLogin = "Child Login demo";
 
 const Tab = createBottomTabNavigator();
 
@@ -60,6 +64,8 @@ function MainContainer() {
         <Tab.Screen name={settingsName} component={SettingsScreen} />
         <Tab.Screen name={CalendarName} component={CalendarScreen} />
         <Tab.Screen name={AchievementName} component={AchievementScreen} />
+        <Tab.Screen name={parentLogin} component={login} />
+        <Tab.Screen name={childLogin} component={childlogin} />
       </Tab.Navigator>
     </NavigationContainer>
   );
