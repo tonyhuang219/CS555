@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Dimensions, Text, Button } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { TextInput } from "react-native-paper";
-import DateTimePicker from '@react-native-community/masked-view'
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 export default function TaskAdd() {
   const [taskName, setTaskName] = useState("");
