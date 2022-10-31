@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Dimensions, Text, Button } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { TextInput } from "react-native-paper";
+import { signUpWithEmail, getEmail } from "../../backend/firebase";
 
 export default function SignupScreen() {
   const [email, setEmail] = useState("");
@@ -39,7 +40,12 @@ export default function SignupScreen() {
           onChangeText={setPassword}
         />
         <View style={{ height: Dimensions.get("screen").width * 0.04 }}></View>
-        <Button title="Sign up" />
+        <Button
+          title="Sign up"
+          onPress={async () => {
+            let result = await signUpWithEmail(fName, lName, email, password);
+          }}
+        />
         <View style={{ height: Dimensions.get("screen").width * 0.05 }}></View>
         <Button title="Already have an account? Log in" />
       </View>
