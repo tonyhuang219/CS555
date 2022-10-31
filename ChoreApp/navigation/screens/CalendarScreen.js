@@ -54,7 +54,7 @@ const Schedule: React.FC = () => {
       </TouchableOpacity>
     );
   };
-  
+
 
   return (
     <View style={{flex: 1}}>
@@ -68,4 +68,4 @@ const Schedule: React.FC = () => {
   );
 };
 
-export default CalendarScreen;
+//export default CalendarScreen;
