@@ -1,17 +1,23 @@
-import React, {useState} from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { Keyboard,Button, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-export default function Tasks() {
+export default function Tasks({navigation}) {
+
   const [task, setTask] = useState()
   const [taskItems , setTaskItems] = useState([]); //The initial value of taskItem state is an empty array
 
+  useEffect(() => {
+    if(task !== undefined){
+      handleAddTask();
+    }
+  }, [task])
   //onPress() of the button calls handleAddTask()
   //task is a state. It is the string in textinput during the button press.
   //taskItem is a state. It is the array of tasks.
   const handleAddTask = () => {
     Keyboard.dismiss(); //close the keyboard
+  
     setTaskItems([...taskItems, task]); //update taskItems array, previous taskItems array + task -when inserted
-    setTask(null); //Because value = {task} inside  TextInput, this clears the textinput.
   }
 
   //onPress() of the Task component
@@ -21,48 +27,44 @@ export default function Tasks() {
     setTaskItems(itemsCopy);
   }
 
+  const goToTaskAdd = () => {
+    navigation.navigate('TaskAdd', {setTask: setTask }); //, updateTaskList: handleAddTask
+  }
+
   return (
     <View style={styles.container}>
 
       <View style={styles.taskWrapper}>
         <Text style={styles.sectionTitle}> Today's tasks</Text>
+        {console.log("In task, ")}
+        {console.log(task)}
+        {console.log("In taskList, ")}
+        {console.log(taskItems)}
 
         <View style={styles.items}>
         {/** This is where the tasks will go! */}
         {
+          
           taskItems.map((item, index) => { //map takes a call back faction- if 2 parameter it returns value and index.
             /*When you are outputting an array of react component, each component needs a key that unique identify them- we use index- so react can track them overtime
             https://kentcdodds.com/blog/understanding-reacts-key-prop
             */
-
+           //if the array is empty, then the map won't run??? If there is atleast 1 task, then create the task.
+          
             return(
               <TouchableOpacity key={index} onPress={() => completeTask(index)}>
-                <Task text={item}/>
+                <Task title={item.taskName} reward={item.reward} note={item.note}/>
               </TouchableOpacity>
-            )
+            ) 
           })
+          
         }
+        
         </View>
       </View>
 
-        {/* when keyboard opens-when TextInput is pressed-, it covers view. Keyboard avoiding view do not get covered, it moves with keyboard and kbview covers other views. We want the input box to move with keyboard  */}
-        {/*react native documentation - behavior*/}
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.writeTaskWrapper}
-          >
-            {/*onChangeText- callback when textinput's change. You type google. it calls at g, go, goo, goog, googl. the final state is "google" when you stop typing and press button- which gets the state at the correct time- "google". Changed text is passed as a string argument to the callback handler */}
-            {/** value={task}. When you type something in the textInput, it will be there even without value={task}. By itself, this doesn't do anything; however this is used to clear the box after pressing the button using handleAddTask() */}
-            {/** placeholder- initially "write a task". When you type, the write a task disappears */}
-            <TextInput style={styles.input} placeholder={'Write a task'} value={task} onChangeText={text => setTask(text)} />
+      <Button style = {styles.writeTaskWrapper} title='+' onPress={()=> {goToTaskAdd(); }}/>
 
-            {/** touchableopacity- button. Below is the styling for the button. */}
-            <TouchableOpacity onPress={ () => handleAddTask()}>
-              <View style={styles.addWrapper}>
-                <Text style={styles.addText}>+</Text>
-              </View>
-            </TouchableOpacity>
-        </KeyboardAvoidingView>
 
     </View>
 
@@ -87,7 +89,7 @@ const styles = StyleSheet.create({
   },
   writeTaskWrapper: { //The textbox-TextInput- and the button-TouchableOpacity 
     position: 'absolute',
-    bottom: 60,
+    bottom: 20,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -123,7 +125,9 @@ const Task = (props) => {
         <View style={styles.item}>
             <View style  = {styles.itemLeft}>
                 <View style={styles.square}></View>
-                <Text style = {styles.itemText}>{props.text}</Text>
+                <Text style = {styles.itemText}>{"Title:" + props.title}</Text>
+                <Text style = {styles.itemText}>{"Reward:" + props.reward}</Text>
+                <Text style = {styles.itemText}>{"Note" + props.note}</Text>
             </View>
             <View style={styles.circular}></View>
         </View>

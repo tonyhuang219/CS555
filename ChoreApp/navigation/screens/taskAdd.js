@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Dimensions, Text, Button } from "react-native";
+import { StyleSheet, View, Dimensions, Text, Button, ToastAndroid } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { TextInput } from "react-native-paper";
 import DateTimePicker from '@react-native-community/datetimepicker'
 
-export default function TaskAdd() {
+export default function TaskAdd({route, navigation}) {
   const [taskName, setTaskName] = useState("");
   const [reward, setReward] = useState("");
   const [note, setNote] = useState("");
+
+  const [task, setTask] = useState({});
+
   
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -25,7 +28,7 @@ export default function TaskAdd() {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
-    setDate(currentDate);
+    setDate(currentDate); //update the state with selectedDate
 
     //update the tempDate variable with the date selected.
     let tempDate = new Date(currentDate);
@@ -36,6 +39,27 @@ export default function TaskAdd() {
     setText(fDate + '\n' + fTime)
 
     console.log(fDate + ' (' + fTime + ')')
+  }
+
+  const addTask = () => {
+    let updatedTask = {};
+    updatedTask = {
+      "taskName" : taskName, 
+      "reward" : reward,
+      "note" : note,
+      "date" : date
+    }
+  
+    
+
+    console.log(updatedTask);
+    setTask(updatedTask);
+    ToastAndroid.show('Task added successfully!', ToastAndroid.SHORT);
+    //console.log(route.params.setTask)
+    route.params.setTask(updatedTask);
+    //route.params.setTask(updatedTask);
+    navigation.goBack();
+    
   }
 
   return (
@@ -67,7 +91,10 @@ export default function TaskAdd() {
         <Text>{text}</Text>
         <Button title='DatePicker' onPress={()=> showMode('date')}/>
         <Button title='TimePicker' onPress={()=> showMode('time')}/>
-        {/* onPress. it updates showMode which set show=true, mode=time */}
+        {/* onPress. it updates showMode which set show=true, mode=time. pass to below: show && (<DateTimePicker>) */}
+
+        <Button title='Done' onPress={()=> {addTask(); }}/>
+
         {
           show && (
             <DateTimePicker
@@ -76,7 +103,7 @@ export default function TaskAdd() {
             mode = {mode}
             is24Hour = {true}
             display = 'default'
-            onChange={onChange}
+            onChange={onChange} //calls onChange(selectedDate)
           />)
         }
       </View>
