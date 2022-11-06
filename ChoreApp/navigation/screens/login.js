@@ -2,30 +2,15 @@ import React, { useState } from "react";
 import { StyleSheet, View, Dimensions, Text, Button } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { TextInput } from "react-native-paper";
-import { signUpWithEmail, getEmail } from "../../backend/firebase";
 
-export default function SignupScreen() {
+export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fName, setfName] = useState("");
-  const [lName, setlName] = useState("");
 
   return (
     <>
       <StatusBar />
       <View style={styles.container}>
-        <TextInput
-          style={styles.textInput}
-          activeUnderlineColor="#A32638"
-          label="First Name"
-          onChangeText={setfName}
-        />
-        <TextInput
-          style={styles.textInput}
-          activeUnderlineColor="#A32638"
-          label="Last Name"
-          onChangeText={setlName}
-        />
         <TextInput
           style={styles.textInput}
           activeUnderlineColor="#A32638"
@@ -40,14 +25,7 @@ export default function SignupScreen() {
           onChangeText={setPassword}
         />
         <View style={{ height: Dimensions.get("screen").width * 0.04 }}></View>
-        <Button
-          title="Sign up"
-          onPress={async () => {
-            let result = await signUpWithEmail(fName, lName, email, password);
-          }}
-        />
-        <View style={{ height: Dimensions.get("screen").width * 0.05 }}></View>
-        <Button title="Already have an account? Log in" />
+        <Button title="Log in" />
       </View>
     </>
   );
