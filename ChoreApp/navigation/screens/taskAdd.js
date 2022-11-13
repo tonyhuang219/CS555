@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Dimensions, Text, Button, ToastAndroid } from "react-native";
-import { StatusBar } from "expo-status-bar";
 import { TextInput } from "react-native-paper";
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { addTaskDB } from "../../backend/firebase";
 
 export default function TaskAdd({route, navigation}) {
   const [taskName, setTaskName] = useState("");
@@ -41,7 +41,7 @@ export default function TaskAdd({route, navigation}) {
     console.log(fDate + ' (' + fTime + ')')
   }
 
-  const addTask = () => {
+  const addTask = async () => {
     let updatedTask = {};
     updatedTask = {
       "taskName" : taskName, 
@@ -50,13 +50,14 @@ export default function TaskAdd({route, navigation}) {
       "date" : date
     }
   
-    
+    let result = await addTaskDB(taskName, reward, note, date);
 
     console.log(updatedTask);
-    setTask(updatedTask);
+    // setTask(updatedTask); //is this code needed?
+    // //console.log(route.params.setTask)
+    // route.params.setTask(updatedTask);
     ToastAndroid.show('Task added successfully!', ToastAndroid.SHORT);
-    //console.log(route.params.setTask)
-    route.params.setTask(updatedTask);
+    
     //route.params.setTask(updatedTask);
     navigation.goBack();
     
@@ -64,7 +65,6 @@ export default function TaskAdd({route, navigation}) {
 
   return (
     <>
-      <StatusBar />     
       <View style={styles.container}>
         <Text>Task Title</Text>
         <TextInput
@@ -93,7 +93,7 @@ export default function TaskAdd({route, navigation}) {
         <Button title='TimePicker' onPress={()=> showMode('time')}/>
         {/* onPress. it updates showMode which set show=true, mode=time. pass to below: show && (<DateTimePicker>) */}
 
-        <Button title='Done' onPress={()=> {addTask(); }}/>
+        <Button title='Done' onPress={async ()=> {addTask(); }}/>
 
         {
           show && (

@@ -1,30 +1,35 @@
 import React, {useState, useEffect} from 'react';
 import { Keyboard,Button, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {getFirestore, onSnapshot, collection}  from 'firebase/firestore';
+import { deleteTaskDB, getAllTasks } from "../../backend/firebase";
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function Tasks({navigation}) {
 
+  useEffect(() => {
+    async function fetchData(){
+      
+      //console.log("test") . Rerenders when update with some new data. Like what?
+      let taskList = []
+
+      let querySnapshot = await getAllTasks();
+      querySnapshot.forEach((doc) => {
+        taskList.push({...doc.data(), id: doc.id})
+      })
+      setTaskItems(taskList);
+    }
+    fetchData();
+  });
+  
   const [task, setTask] = useState()
   const [taskItems , setTaskItems] = useState([]); //The initial value of taskItem state is an empty array
 
-  useEffect(() => {
-    if(task !== undefined){
-      handleAddTask();
-    }
-  }, [task])
-  //onPress() of the button calls handleAddTask()
-  //task is a state. It is the string in textinput during the button press.
-  //taskItem is a state. It is the array of tasks.
-  const handleAddTask = () => {
-    Keyboard.dismiss(); //close the keyboard
-  
-    setTaskItems([...taskItems, task]); //update taskItems array, previous taskItems array + task -when inserted
-  }
 
   //onPress() of the Task component
-  const completeTask = (index) => {
-    let itemsCopy = [...taskItems]; //get all items in taskItems
-    itemsCopy.splice(index, 1); //removes the item at index from the array
-    setTaskItems(itemsCopy);
+  const completeTask = async (index) => {
+    let task = taskItems[index];
+    let result = await deleteTaskDB(task.id);
+
   }
 
   const goToTaskAdd = () => {
@@ -33,14 +38,9 @@ export default function Tasks({navigation}) {
 
   return (
     <View style={styles.container}>
-
+      <ScrollView>
       <View style={styles.taskWrapper}>
         <Text style={styles.sectionTitle}> Today's tasks</Text>
-        {console.log("In task, ")}
-        {console.log(task)}
-        {console.log("In taskList, ")}
-        {console.log(taskItems)}
-
         <View style={styles.items}>
         {/** This is where the tasks will go! */}
         {
@@ -52,8 +52,8 @@ export default function Tasks({navigation}) {
            //if the array is empty, then the map won't run??? If there is atleast 1 task, then create the task.
           
             return(
-              <TouchableOpacity key={index} onPress={() => completeTask(index)}>
-                <Task title={item.taskName} reward={item.reward} note={item.note}/>
+              <TouchableOpacity key={index} onPress={async () => {completeTask(index);}}>
+                <Task title={item.Task_Name} reward={item.Reward} note={item.Note} date={item.Date}/>
               </TouchableOpacity>
             ) 
           })
@@ -62,9 +62,8 @@ export default function Tasks({navigation}) {
         
         </View>
       </View>
-
+      </ScrollView>
       <Button style = {styles.writeTaskWrapper} title='+' onPress={()=> {goToTaskAdd(); }}/>
-
 
     </View>
 
@@ -120,21 +119,31 @@ const styles = StyleSheet.create({
 
 const Task = (props) => {
     
+  //update the tempDate variable with the date selected.
+  let tempDate = props.date;
+  tempDate = tempDate.toDate();
+  let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
+  let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
+  
+  //set the text under Date
 
     return (
-        <View style={styles.item}>
-            <View style  = {styles.itemLeft}>
-                <View style={styles.square}></View>
-                <Text style = {styles.itemText}>{"Title:" + props.title}</Text>
-                <Text style = {styles.itemText}>{"Reward:" + props.reward}</Text>
-                <Text style = {styles.itemText}>{"Note" + props.note}</Text>
+        <View style={organizer.item}>
+            <View style  = {organizer.itemLeft}>
+                <TouchableOpacity style={organizer.square}></TouchableOpacity>
+                <View>
+                  <Text style = {{ ...organizer.itemText, ...organizer.title}}>{"Title: " + props.title}</Text>
+                  <Text style = {{...organizer.itemText, ...organizer.reward}}>{"Reward: " + props.reward}</Text>
+                  <Text style = {organizer.itemText}>{"Note " + props.note}</Text>
+                  <Text style = {{...organizer.itemText, ...organizer.time}}>{"Time: " + fDate + '\n' + fTime}</Text>
+                </View>
             </View>
-            <View style={styles.circular}></View>
+            <View style={organizer.circular}></View>
         </View>
     )
 }
 
-const organzier = StyleSheet.create({
+const organizer = StyleSheet.create({
     item: {
         backgroundColor: '#FFF',
         padding: 15,
@@ -158,8 +167,8 @@ const organzier = StyleSheet.create({
         marginRight: 15 //space between the button and text
     },
     itemText: {
-        maxWidth: '80%', //ensure the text for task won't push circle outside the screen
-
+        maxWidth: '100%', //ensure the text for task won't push circle outside the screen
+        
     },
     circular: {
         width: 12,
@@ -168,4 +177,17 @@ const organzier = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 5,
     },
+    title: {
+      color: 'blue'
+
+    },
+    reward: {
+      color: 'orange'
+    },
+    note: {
+
+    },
+    time: {
+      color: 'red'
+    }
 });

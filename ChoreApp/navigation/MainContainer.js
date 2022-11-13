@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Screens
 import Task from './screens/Tasks';
-import TaskAdd from './screens/TaskAdd';
+import TaskAdd from './screens/taskAdd';
 import signup from './screens/signup';
 import SettingsScreen from './screens/SettingsScreen';
 import CalendarScreen from './screens/CalendarScreen';
