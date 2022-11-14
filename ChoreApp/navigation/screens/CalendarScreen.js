@@ -8,7 +8,7 @@ const timeToString = (time) => {
   return date.toISOString().split('T')[0];
 };
 
-const Schedule: React.FC = () => {
+const CalendarScreen: React.FC = () => {
   const [items, setItems] = useState({});
 
   const loadItems = (day) => {
@@ -47,7 +47,7 @@ const Schedule: React.FC = () => {
                 alignItems: 'center',
               }}>
               <Text>{item.name}</Text>
-              <Avatar.Text label="J" />
+              
             </View>
           </Card.Content>
         </Card>
@@ -61,11 +61,12 @@ const Schedule: React.FC = () => {
       <Agenda
         items={items}
         loadItemsForMonth={loadItems}
-        selected={'2017-05-16'}
+        selected={'2022-11-13'}
         renderItem={renderItem}
       />
     </View>
   );
+
 };
 
-//export default CalendarScreen;
+export default CalendarScreen;
