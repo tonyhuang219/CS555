@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Screens
-import Tasks from './screens/Tasks';
+import Task from './screens/Tasks';
+import TaskAdd from './screens/taskAdd';
 import signup from './screens/signup';
 import SettingsScreen from './screens/SettingsScreen';
 import CalendarScreen from './screens/CalendarScreen';
@@ -17,11 +19,23 @@ const homeName = "Home";
 const detailsName = "Details";
 const settingsName = "Settings";
 const CalendarName = "Calendar";
+const TaskAddName = "Add Task";
 const AchievementName = "Achievement";
 const parentLogin = "Login demo";
 const childLogin = "Child Login demo";
 
 const Tab = createBottomTabNavigator();
+
+const TaskStack = createStackNavigator();
+
+const TaskNavigator = () => {
+  return(
+    <TaskStack.Navigator screenOptions={{headerShown:false}}>
+      <TaskStack.Screen name="Task" component= {Task}/>
+      <TaskStack.Screen name="TaskAdd" component= {TaskAdd}/>
+    </TaskStack.Navigator>
+  )
+}
 
 function MainContainer() {
   return (
@@ -59,7 +73,7 @@ function MainContainer() {
           style: { padding: 10, height: 70}
         }}>
 
-        <Tab.Screen name={homeName} component={Tasks} />
+        <Tab.Screen name={homeName} component={TaskNavigator} />
         <Tab.Screen name={detailsName} component={signup} />
         <Tab.Screen name={settingsName} component={SettingsScreen} />
         <Tab.Screen name={CalendarName} component={CalendarScreen} />

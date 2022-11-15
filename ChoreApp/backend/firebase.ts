@@ -1,19 +1,19 @@
 import React from 'react'
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { getFirestore, addDoc, collection, query, where, getDocs, DocumentSnapshot, getDoc, doc, updateDoc, arrayUnion, DocumentReference } from 'firebase/firestore';
+import { getFirestore, addDoc, deleteDoc, collection, query, where, getDocs, DocumentSnapshot, getDoc, doc, updateDoc, arrayUnion, DocumentReference, onSnapshot } from 'firebase/firestore';
 import Constants from 'expo-constants';
 import 'firebase/auth'
 import { getStorage, ref, uploadString } from "firebase/storage";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyARxrBrnLpBkBYElJ99NmVH-SeURilv5go",
-    authDomain: "choreapp-509d1.firebaseapp.com",
-    projectId: "choreapp-509d1",
-    storageBucket: "choreapp-509d1.appspot.com",
-    messagingSenderId: "457327985127",
-    appId: "1:457327985127:web:ccf84e7c39bb4624b0fd42",
-    measurementId: "G-CYJZSDWFHR"
+    apiKey: "AIzaSyAVhpJbSSTXzxJGSgN1S69a5U47PSt-8ag",
+    authDomain: "cs555-25b5d.firebaseapp.com",
+    projectId: "cs555-25b5d",
+    storageBucket: "cs555-25b5d.appspot.com",
+    messagingSenderId: "849138197372",
+    appId: "1:849138197372:web:4c70131c9cbd8276067af9",
+    measurementId: "G-3GSCYTDXGB"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -111,4 +111,31 @@ export const getFirstName = async () => {
     }
 
     return name_one;
+}
+
+// TASKADD // ------------------------------
+export const addTaskDB = async (taskName: string, reward: string, note: string, date: Date) => {
+    try {
+        const taskDate = {
+            Task_Name: taskName,
+            Reward: reward,
+            Note: note,
+            Date: date,
+        }
+        const docRef = await addDoc(collection(firestore, "tasks" ), taskDate);
+        return docRef;  //  console.log(docRef.id);
+    } catch (e) {
+        throw e;
+    }
+}
+
+
+export const deleteTaskDB = async (id) => {
+    const docRef = doc(firestore, "tasks", id);
+    const deleteInfo = await deleteDoc(docRef);
+}
+
+export const getAllTasks = async () =>{
+    let querySnapshot = await getDocs(collection(firestore, 'tasks'));
+    return querySnapshot;
 }
