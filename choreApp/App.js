@@ -1,9 +1,9 @@
 import * as React from 'react';
-import MainContainer from './navigation/MainContainer';
+import UserStack from './navigation/MainContainer';
 
 function App() {
   return (
-    <MainContainer/>
+    <UserStack/>
   );
 }
 

@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { StyleSheet, View, Dimensions, Text, Button, ToastAndroid } from "react-native";
+
 
 // Screens
 import Task from './screens/Tasks';
@@ -35,6 +37,66 @@ const TaskNavigator = () => {
       <TaskStack.Screen name="TaskAdd" component= {TaskAdd}/>
     </TaskStack.Navigator>
   )
+}
+
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getUserType } from '../backend/firebase';
+
+let type = "parent";
+  //delete this
+  const auth = getAuth();
+  onAuthStateChanged(auth, ( user) => {
+    async function main(){
+      type= await getUserType(user.uid);
+    }
+    main();
+  })
+  //delete 
+
+
+function UserStack(){
+  //should be determined by login
+  if(type === "parent"){
+    console.log("test")
+    return (<MainContainer></MainContainer>)
+  }else{
+    return (<NavigationContainer>
+      <Tab.Navigator
+        initialRouteName={homeName}
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            let rn = route.name;
+
+            if (rn === homeName) {
+              iconName = focused ? 'home' : 'home-outline';
+
+            } else if (rn === CalendarName) {
+              iconName = focused ? 'calendar' : 'calendar-outline';
+            } else if (rn === AchievementName) {
+              iconName = focused ? 'Trophy' : 'md-trophy-outline';
+            }
+
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: '#42bcf5',
+          inactiveTintColor: 'grey',
+          labelStyle: { paddingBottom: 10, fontSize: 10 },
+          style: { padding: 10, height: 70}
+        }}>
+
+        <Tab.Screen name={homeName} component={TaskNavigator} />
+        <Tab.Screen name={CalendarName} component={CalendarScreen} />
+        <Tab.Screen name={AchievementName} component={AchievementScreen} />
+        <Tab.Screen name={parentLogin} component={login} />
+        <Tab.Screen name={childLogin} component={childlogin} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+  }
 }
 
 function MainContainer() {
@@ -85,4 +147,4 @@ function MainContainer() {
   );
 }
 
-export default MainContainer;
+export default UserStack;

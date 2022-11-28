@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Dimensions, Text, Button, ToastAndroid } from "react-native";
 import { TextInput } from "react-native-paper";
 import DateTimePicker from '@react-native-community/datetimepicker'
+import {Picker} from "@react-native-picker/picker";
 import { addTaskDB } from "../../backend/firebase";
 
 export default function TaskAdd({route, navigation}) {
@@ -16,6 +17,7 @@ export default function TaskAdd({route, navigation}) {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [text, setText] = useState('Empty');
+  const [child, setChild] = useState("child-name-holder");
 
   //Display the data picker
   //set Mode to time/date
@@ -47,15 +49,17 @@ export default function TaskAdd({route, navigation}) {
       "taskName" : taskName, 
       "reward" : reward,
       "note" : note,
-      "date" : date
+      "date" : date,
+      "child" : child
     }
   
-    let result = await addTaskDB(taskName, reward, note, date);
+    let result = await addTaskDB(taskName, reward, note, date, child);
 
     console.log(updatedTask);
     // setTask(updatedTask); //is this code needed?
     // //console.log(route.params.setTask)
     // route.params.setTask(updatedTask);
+    await route.params.fetchData();
     ToastAndroid.show('Task added successfully!', ToastAndroid.SHORT);
     
     //route.params.setTask(updatedTask);
@@ -87,6 +91,16 @@ export default function TaskAdd({route, navigation}) {
           label="Notes  "
           onChangeText={setNote}
         />
+        <Picker
+          style={{ height: 50, width: 250 }}
+          mode={"dialog"}
+          onValueChange={(itemValue) => setChild(itemValue)}
+        >
+          <Picker.Item label="Freddy" value="Freddy" />
+          <Picker.Item label="Bob" value="Bob" />
+          <Picker.Item label="Tiffany" value="Tiffany" />
+        </Picker>
+
         <Text>Date</Text>
         <Text>{text}</Text>
         <Button title='DatePicker' onPress={()=> showMode('date')}/>

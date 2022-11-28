@@ -4,22 +4,30 @@ import {getFirestore, onSnapshot, collection}  from 'firebase/firestore';
 import { deleteTaskDB, getAllTasks } from "../../backend/firebase";
 import { ScrollView } from 'react-native-gesture-handler';
 
+
+
 export default function Tasks({navigation}) {
 
-  useEffect(() => {
-    async function fetchData(){
-      
-      //console.log("test") . Rerenders when update with some new data. Like what?
-      let taskList = []
+  async function fetchData(){
+    console.log("fetchData")
+    let taskList = []
 
-      let querySnapshot = await getAllTasks();
-      querySnapshot.forEach((doc) => {
-        taskList.push({...doc.data(), id: doc.id})
-      })
-      setTaskItems(taskList);
-    }
-    fetchData();
-  });
+    let querySnapshot = await getAllTasks();
+    querySnapshot.forEach((doc) => {
+      taskList.push({...doc.data(), id: doc.id})
+    })
+    setTaskItems(taskList); // setState inside useEffect will create an infinite loop. Causes firebase to query too many reads
+    //fetchData() called after navigating back from taskList
+  }
+
+  useEffect( () =>{
+    async function main(){
+      await fetchData();
+     }
+     main();
+  }, [])
+      
+
   
   const [task, setTask] = useState()
   const [taskItems , setTaskItems] = useState([]); //The initial value of taskItem state is an empty array
@@ -33,7 +41,7 @@ export default function Tasks({navigation}) {
   }
 
   const goToTaskAdd = () => {
-    navigation.navigate('TaskAdd', {setTask: setTask }); //, updateTaskList: handleAddTask
+    navigation.navigate('TaskAdd', {setTask: setTask , fetchData: fetchData}); //, updateTaskList: handleAddTask
   }
 
   return (
@@ -53,7 +61,7 @@ export default function Tasks({navigation}) {
           
             return(
               <TouchableOpacity key={index} onPress={async () => {completeTask(index);}}>
-                <Task title={item.Task_Name} reward={item.Reward} note={item.Note} date={item.Date}/>
+                <Task title={item.Task_Name} reward={item.Reward} note={item.Note} child={item.Child} date={item.Date}/>
               </TouchableOpacity>
             ) 
           })
@@ -135,6 +143,7 @@ const Task = (props) => {
                   <Text style = {{ ...organizer.itemText, ...organizer.title}}>{"Title: " + props.title}</Text>
                   <Text style = {{...organizer.itemText, ...organizer.reward}}>{"Reward: " + props.reward}</Text>
                   <Text style = {organizer.itemText}>{"Note " + props.note}</Text>
+                  <Text style = {organizer.itemText}>{"Child: " + props.child}</Text>
                   <Text style = {{...organizer.itemText, ...organizer.time}}>{"Time: " + fDate + '\n' + fTime}</Text>
                 </View>
             </View>
