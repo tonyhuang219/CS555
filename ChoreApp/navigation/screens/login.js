@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Dimensions, Text, Button } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { TextInput } from "react-native-paper";
+import { logInWithEmail, getEmail } from "../../backend/firebase";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -25,7 +26,10 @@ export default function LoginScreen() {
           onChangeText={setPassword}
         />
         <View style={{ height: Dimensions.get("screen").width * 0.04 }}></View>
-        <Button title="Log in" />
+        <Button title="Log in"           
+            onPress={async () => {
+            let result = await logInWithEmail(email, password);
+          }}/>
       </View>
     </>
   );
