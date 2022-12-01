@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Dimensions, Text, Button, ToastAndroid } from "react-native";
 import { TextInput } from "react-native-paper";
-import DateTimePicker from '@react-native-community/datetimepicker'
+//import DateTimePicker from '@react-native-community/datetimepicker'
 import { addTaskDB } from "../../backend/firebase";
 
 export default function TaskAdd({route, navigation}) {
