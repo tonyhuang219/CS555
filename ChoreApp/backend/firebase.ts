@@ -1,7 +1,7 @@
 import React from 'react'
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { getFirestore, addDoc, collection, query, where, getDocs, DocumentSnapshot, getDoc, doc, updateDoc, arrayUnion, DocumentReference } from 'firebase/firestore';
+import { getFirestore, addDoc, deleteDoc, collection, query, where, getDocs, DocumentSnapshot, getDoc, doc, updateDoc, arrayUnion, DocumentReference, onSnapshot } from 'firebase/firestore';
 import Constants from 'expo-constants';
 import 'firebase/auth'
 import { getStorage, ref, uploadString } from "firebase/storage";
@@ -112,4 +112,35 @@ export const getFirstName = async () => {
     }
 
     return name_one;
+<<<<<<< HEAD
 }
+=======
+}
+
+// TASKADD // ------------------------------
+export const addTaskDB = async (taskName: string, reward: string, note: string, date: Date) => {
+    try {
+        const taskDate = {
+            Task_Name: taskName,
+            Reward: reward,
+            Note: note,
+            Date: date,
+        }
+        const docRef = await addDoc(collection(firestore, "tasks" ), taskDate);
+        return docRef;  //  console.log(docRef.id);
+    } catch (e) {
+        throw e;
+    }
+}
+
+
+export const deleteTaskDB = async (id) => {
+    const docRef = doc(firestore, "tasks", id);
+    const deleteInfo = await deleteDoc(docRef);
+}
+
+export const getAllTasks = async () =>{
+    let querySnapshot = await getDocs(collection(firestore, 'tasks'));
+    return querySnapshot;
+}
+>>>>>>> 6ac31868e344fa48ae7f4aed5dba580ebd8df5bf

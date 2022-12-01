@@ -8,7 +8,14 @@ For technology, we use javascript and typescript to program a react-native app. 
 
 # How to install and run the project
 
-First downCurrently, to run the app, we go to the my-app folder and type "npx expo start" or "npx expo start --tunnel" (public wifi). Then, we download the expo app. With the expo app, we scan the QR and the app should run. Potentially, we use docker to ensure that anyone is able to run the app no matter what device.
+In the terminal, navigate to the directory containing app.js, and run the following commands:  
+ npm install : install all the dependencies for the project  
+ npx expo start or npx expo start --tunnel : start the server
+
+Download the expo app.
+Scan the QR code in the terminal and the app should run.
+
+Potentially, we use docker to ensure that anyone is able to run the app no matter what device.
 
 # Credits
 
