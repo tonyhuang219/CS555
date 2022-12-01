@@ -4,7 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { TextInput } from "react-native-paper";
 import { logInWithEmail, getEmail } from "../../backend/firebase";
 
-export default function LoginScreen() {
+export default function LoginScreen({navigation}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -29,6 +29,12 @@ export default function LoginScreen() {
         <Button title="Log in"           
             onPress={async () => {
             let result = await logInWithEmail(email, password);
+            if (result = "success"){
+              navigation.navigate("Home");
+            }
+            else{
+              console.log("can't log in")
+            }
           }}/>
       </View>
     </>

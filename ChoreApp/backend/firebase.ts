@@ -112,9 +112,6 @@ export const getFirstName = async () => {
     }
 
     return name_one;
-<<<<<<< HEAD
-}
-=======
 }
 
 // TASKADD // ------------------------------
@@ -143,4 +140,3 @@ export const getAllTasks = async () =>{
     let querySnapshot = await getDocs(collection(firestore, 'tasks'));
     return querySnapshot;
 }
->>>>>>> 6ac31868e344fa48ae7f4aed5dba580ebd8df5bf
