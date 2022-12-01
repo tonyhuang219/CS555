@@ -1,31 +1,37 @@
 import React, {useState, useEffect} from 'react';
 import { Keyboard,Button, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import {getFirestore, onSnapshot, collection}  from 'firebase/firestore';
-import { deleteTaskDB, getAllTasks } from "../../backend/firebase";
+import { deleteTaskDB, getAllTasks, getIDFromCode } from "../../backend/firebase";
 import { ScrollView } from 'react-native-gesture-handler';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from "@react-navigation/native";
 
 
 export default function Tasks({navigation}) {
 
+  const isFocused = useIsFocused();
   async function fetchData(){
-    console.log("fetchData")
-    let taskList = []
+    try {
+      const uid = await AsyncStorage.getItem('parentID');
+      
+      console.log("uuid: " +uid);
+      let taskList = await getAllTasks(uid);
+      console.log(taskList)
+      
+      setTaskItems(taskList); // setState inside useEffect will create an infinite loop. Causes firebase to query too many reads
+      //fetchData() called after navigating back from taskListm
+      
 
-    let querySnapshot = await getAllTasks();
-    querySnapshot.forEach((doc) => {
-      taskList.push({...doc.data(), id: doc.id})
-    })
-    setTaskItems(taskList); // setState inside useEffect will create an infinite loop. Causes firebase to query too many reads
-    //fetchData() called after navigating back from taskList
-  }
+    } catch (error) {
+      console.log("err: " + error)
+    }
+   }
 
+  //called when screen is open or when back on the screen
   useEffect( () =>{
-    async function main(){
-      await fetchData();
-     }
-     main();
-  }, [])
+    
+     fetchData();
+  }, [isFocused])
       
 
   
@@ -37,11 +43,17 @@ export default function Tasks({navigation}) {
   const completeTask = async (index) => {
     let task = taskItems[index];
     let result = await deleteTaskDB(task.id);
-
+    fetchData();
   }
 
-  const goToTaskAdd = () => {
-    navigation.navigate('TaskAdd', {setTask: setTask , fetchData: fetchData}); //, updateTaskList: handleAddTask
+  const goToTaskAdd = async () => {
+    const type = await AsyncStorage.getItem('type');
+    if(type === "parent"){
+      navigation.navigate('TaskAdd', {setTask: setTask , fetchData: fetchData}); //, updateTaskList: handleAddTask
+    }else{
+
+    }
+    
   }
 
   return (
@@ -71,8 +83,7 @@ export default function Tasks({navigation}) {
         </View>
       </View>
       </ScrollView>
-      <Button style = {styles.writeTaskWrapper} title='+' onPress={()=> {goToTaskAdd(); }}/>
-
+      <Button style = {styles.writeTaskWrapper} title='+' onPress={ async ()=> {await goToTaskAdd(); }}/>
     </View>
 
   );

@@ -54,33 +54,34 @@ let type = "parent";
   //delete 
 
 
-function UserStack(){
+export function AuthStack(){
   //should be determined by login
-  if(type === "parent"){
-    console.log("test")
-    return (<MainContainer></MainContainer>)
-  }else{
     return (<NavigationContainer>
       <Tab.Navigator
+        initialRouteName={parentLogin}
+
+        tabBarOptions={{
+          activeTintColor: '#42bcf5',
+          inactiveTintColor: 'grey',
+          labelStyle: { paddingBottom: 10, fontSize: 10 },
+          style: { padding: 10, height: 70}
+        }}>
+
+        <Tab.Screen name={detailsName} component={signup} />
+        <Tab.Screen name={parentLogin} component={login} />
+        <Tab.Screen name={childLogin} component={childlogin} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
+
+
+export function ChildContainer() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
         initialRouteName={homeName}
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-            let rn = route.name;
-
-            if (rn === homeName) {
-              iconName = focused ? 'home' : 'home-outline';
-
-            } else if (rn === CalendarName) {
-              iconName = focused ? 'calendar' : 'calendar-outline';
-            } else if (rn === AchievementName) {
-              iconName = focused ? 'Trophy' : 'md-trophy-outline';
-            }
-
-            // You can return any component that you like here!
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-        })}
+        
         tabBarOptions={{
           activeTintColor: '#42bcf5',
           inactiveTintColor: 'grey',
@@ -96,10 +97,9 @@ function UserStack(){
       </Tab.Navigator>
     </NavigationContainer>
   );
-  }
 }
 
-function MainContainer() {
+export function MainContainer() {
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -146,5 +146,3 @@ function MainContainer() {
     </NavigationContainer>
   );
 }
-
-export default UserStack;

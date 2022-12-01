@@ -1,9 +1,12 @@
 import * as React from 'react';
-import UserStack from './navigation/MainContainer';
+import UserStack from './navigation/AppNav';
+import {AuthProvider} from './navigation/AuthContext'
 
 function App() {
   return (
+    <AuthProvider>
     <UserStack/>
+    </AuthProvider>
   );
 }
 
