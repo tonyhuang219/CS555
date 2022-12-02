@@ -10,13 +10,13 @@ import 'firebase/auth'
 import { getStorage, ref, uploadString } from "firebase/storage";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAVhpJbSSTXzxJGSgN1S69a5U47PSt-8ag",
-    authDomain: "cs555-25b5d.firebaseapp.com",
-    projectId: "cs555-25b5d",
-    storageBucket: "cs555-25b5d.appspot.com",
-    messagingSenderId: "849138197372",
-    appId: "1:849138197372:web:4c70131c9cbd8276067af9",
-    measurementId: "G-3GSCYTDXGB"
+    apiKey: "AIzaSyAeTsGwq3g_hzvEE4iyLgDxQ2ssKSSUPRs",
+    authDomain: "choreapp-83385.firebaseapp.com",
+    projectId: "choreapp-83385",
+    storageBucket: "choreapp-83385.appspot.com",
+    messagingSenderId: "465424772715",
+    appId: "1:465424772715:web:3b478948cb5be29708cb2e",
+    measurementId: "G-5Y4ZPHM377"
   };
 
 const app = initializeApp(firebaseConfig);
