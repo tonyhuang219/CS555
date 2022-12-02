@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { StyleSheet, View, Dimensions, Text, Button, ToastAndroid } from "react-native";
-
+import Icon from 'react-native-ionicons';
 
 // Screens
 import Task from './screens/Tasks';
@@ -90,16 +90,17 @@ export function ChildContainer() {
           labelStyle: { paddingBottom: 10, fontSize: 10 },
           style: { padding: 10, height: 70}
         }}>
-
-        <Tab.Screen name={homeName} component={TaskNavigator} />
+        
         <Tab.Screen name={CalendarName} component={CalendarScreen} />
+        <Tab.Screen name={homeName} component={TaskNavigator} />
         <Tab.Screen name={AchievementName} component={AchievementScreen} />
-        <Tab.Screen name={parentLogin} component={login} />
-        <Tab.Screen name={childLogin} component={childlogin} />
+       
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
+//<Tab.Screen name={parentLogin} component={login} />
+//<Tab.Screen name={childLogin} component={childlogin} />
 
 export function MainContainer() {
   return (
@@ -122,8 +123,9 @@ export function MainContainer() {
             }
             else if (rn === CalendarName) {
               iconName = focused ? 'calendar' : 'calendar-outline';
+              
             } else if (rn === AchievementName) {
-              iconName = focused ? 'Trophy' : 'md-trophy-outline';
+              iconName = focused ? 'trophy' : 'md-trophy-outline';
             }
 
             // You can return any component that you like here!
@@ -136,12 +138,12 @@ export function MainContainer() {
           labelStyle: { paddingBottom: 10, fontSize: 10 },
           style: { padding: 10, height: 70}
         }}>
-        
-       
+
         <Tab.Screen name={CalendarName} component={CalendarScreen} />
         <Tab.Screen name={homeName} component={TaskNavigator} />
         <Tab.Screen name={AchievementName} component={AchievementScreen} />
         <Tab.Screen name={settingsName} component={SettingsScreen} />
+        
         
       </Tab.Navigator>
     </NavigationContainer>

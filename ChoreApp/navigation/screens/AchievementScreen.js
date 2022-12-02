@@ -9,11 +9,7 @@ export default function AchievementScreen({navigation}) {
     function renderProduct({item: product}) {
       return (
         <Product {...product} 
-        onPress={() => {
-          navigation.navigate('ProductDetails', {
-            productId: product.id,
-          });
-        }}
+        
         />
       );
     }
