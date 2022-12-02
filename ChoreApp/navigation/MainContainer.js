@@ -26,6 +26,7 @@ const TaskAddName = "Add Task";
 const AchievementName = "Achievement";
 const parentLogin = "Login demo";
 const childLogin = "Child Login demo";
+const childCode = "Simple Todolist"
 
 const Tab = createBottomTabNavigator();
 
@@ -135,15 +136,17 @@ export function MainContainer() {
           labelStyle: { paddingBottom: 10, fontSize: 10 },
           style: { padding: 10, height: 70}
         }}>
-
-        <Tab.Screen name={homeName} component={TaskNavigator} />
-        <Tab.Screen name={detailsName} component={ChildCode} />
-        <Tab.Screen name={settingsName} component={SettingsScreen} />
+        
+       
         <Tab.Screen name={CalendarName} component={CalendarScreen} />
+        <Tab.Screen name={homeName} component={TaskNavigator} />
         <Tab.Screen name={AchievementName} component={AchievementScreen} />
-        <Tab.Screen name={parentLogin} component={login} />
-        <Tab.Screen name={childLogin} component={childlogin} />
+        <Tab.Screen name={settingsName} component={SettingsScreen} />
+        
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
+//<Tab.Screen name={detailsName} component={ChildCode} />
+//<Tab.Screen name={parentLogin} component={login} />
+//<Tab.Screen name={childLogin} component={childlogin} />
