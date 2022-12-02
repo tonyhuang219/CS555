@@ -15,6 +15,7 @@ import CalendarScreen from './screens/CalendarScreen';
 import AchievementScreen from './screens/AchievementScreen';
 import login from './screens/login';
 import childlogin from './screens/childlogin';
+import ChildCode from './screens/ChildCode';
 
 //Screen names
 const homeName = "Home";
@@ -136,7 +137,7 @@ export function MainContainer() {
         }}>
 
         <Tab.Screen name={homeName} component={TaskNavigator} />
-        <Tab.Screen name={detailsName} component={signup} />
+        <Tab.Screen name={detailsName} component={ChildCode} />
         <Tab.Screen name={settingsName} component={SettingsScreen} />
         <Tab.Screen name={CalendarName} component={CalendarScreen} />
         <Tab.Screen name={AchievementName} component={AchievementScreen} />
