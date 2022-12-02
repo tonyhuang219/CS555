@@ -1,5 +1,6 @@
 import React from 'react'
 import { initializeApp } from 'firebase/app';
+import { getAnalytics } from "firebase/analytics";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { getFirestore, addDoc, deleteDoc, collection, where, getDocs, DocumentSnapshot, getDoc, doc, updateDoc, arrayUnion, DocumentReference, onSnapshot, query } from 'firebase/firestore';
 import Constants from 'expo-constants';
@@ -9,14 +10,14 @@ import 'firebase/auth'
 import { getStorage, ref, uploadString } from "firebase/storage";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyARxrBrnLpBkBYElJ99NmVH-SeURilv5go",
-    authDomain: "choreapp-509d1.firebaseapp.com",
-    projectId: "choreapp-509d1",
-    storageBucket: "choreapp-509d1.appspot.com",
-    messagingSenderId: "457327985127",
-    appId: "1:457327985127:web:ccf84e7c39bb4624b0fd42",
-    measurementId: "G-CYJZSDWFHR"
-};
+    apiKey: "AIzaSyAVhpJbSSTXzxJGSgN1S69a5U47PSt-8ag",
+    authDomain: "cs555-25b5d.firebaseapp.com",
+    projectId: "cs555-25b5d",
+    storageBucket: "cs555-25b5d.appspot.com",
+    messagingSenderId: "849138197372",
+    appId: "1:849138197372:web:4c70131c9cbd8276067af9",
+    measurementId: "G-3GSCYTDXGB"
+  };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -31,11 +32,12 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
+      console.log("on auth change: "+ user)
       const uid = user.uid;
       const items: [string,string][] = [['parentID',"uid"], ["type", "parent"]]
-      await AsyncStorage.multiSet(
-        items
-      );
+    //   await AsyncStorage.multiSet(
+    //     items
+    //   );
       // ...
     } else {
       // User is signed out
@@ -51,7 +53,8 @@ export const signUpWithEmail = async (fName: string, lName: string, email: strin
             displayName: fName + ' ' + lName,
         });
         console.log(user);
-        await addNewUser(fName, lName, email);
+        let code = (Math.random() + 1).toString(36).substring(7);
+        await addNewUser(fName, lName, email, code);
         return 'success'
     } catch (e) {
         console.log(e);
@@ -64,6 +67,16 @@ export const logInWithEmail = async (email: string, password: string) => {
     try {
         let result = await signInWithEmailAndPassword(auth, email, password);
         user = result.user;
+        console.log("The user: ")
+        console.log(user)
+        const uid = await getIdFromEmail(email);
+        const items: [string,string][] = [['parentID',uid], ["type", "parent"]]
+        
+        await AsyncStorage.multiSet(
+            items
+        );
+        console.log("setting login:" +await AsyncStorage.getItem('parentID'))
+        console.log("setting login:" +await AsyncStorage.getItem('type'))
         return 'success'
     } catch (e) {
         console.log(e);
@@ -83,13 +96,14 @@ export const logOut = async () => {
 }
 
 // FIRESTORE // --------------------------------------------------------------
-const addNewUser = async (fName: string, lName: string, email: string) => {
+const addNewUser = async (fName: string, lName: string, email: string, code: string) => {
     try {
         const userData = {
             first_name: fName,
             last_name: lName,
             email: email,
             cart: [],
+            childlogin: code
         }
         const docRef = await addDoc(collection(firestore, "users", ), userData);
         console.log(docRef.id);
@@ -157,6 +171,20 @@ export const getIDFromCode = async( code: string) =>{
     let id = "";
     querySnapshot.forEach((doc) => {
         if(doc.data().childlogin === code){
+            id= doc.id
+        }})
+    if (id === ""){
+        throw "invalid code"
+    }else{
+        return id;
+    } 
+}
+
+export const getIdFromEmail = async( email: string) =>{
+    let querySnapshot = await getDocs(collection(firestore, 'users'));
+    let id = "";
+    querySnapshot.forEach((doc) => {
+        if(doc.data().email === email){
             id= doc.id
         }})
     if (id === ""){

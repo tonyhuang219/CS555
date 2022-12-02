@@ -46,6 +46,8 @@ export default function TaskAdd({route, navigation}) {
   const addTask = async () => {
     let updatedTask = {};
 
+    
+
     updatedTask = {
       "taskName" : taskName, 
       "reward" : reward,
