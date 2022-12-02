@@ -7,13 +7,12 @@ import 'firebase/auth'
 import { getStorage, ref, uploadString } from "firebase/storage";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyARxrBrnLpBkBYElJ99NmVH-SeURilv5go",
-    authDomain: "choreapp-509d1.firebaseapp.com",
-    projectId: "choreapp-509d1",
-    storageBucket: "choreapp-509d1.appspot.com",
-    messagingSenderId: "457327985127",
-    appId: "1:457327985127:web:ccf84e7c39bb4624b0fd42",
-    measurementId: "G-CYJZSDWFHR"
+    apiKey: Constants.manifest?.extra?.firebaseApiKey,
+    authDomain: Constants.manifest?.extra?.firebaseAuthDomain,
+    projectId: Constants.manifest?.extra?.firebaseProjectId,
+    storageBucket: Constants.manifest?.extra?.firebaseStorageBucket,
+    messagingSenderId: Constants.manifest?.extra?.firebaseMessagingSenderId,
+    appId: Constants.manifest?.extra?.firebaseAppId,
 };
 
 const app = initializeApp(firebaseConfig);
@@ -45,7 +44,6 @@ export const logInWithEmail = async (email: string, password: string) => {
     try {
         let result = await signInWithEmailAndPassword(auth, email, password);
         user = result.user;
-        console.log("success");
         return 'success'
     } catch (e) {
         console.log(e);
