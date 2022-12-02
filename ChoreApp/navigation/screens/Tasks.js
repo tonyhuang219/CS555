@@ -1,69 +1,89 @@
-import React, {useState} from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { Keyboard,Button, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {getFirestore, onSnapshot, collection}  from 'firebase/firestore';
+import { deleteTaskDB, getAllTasks, getIDFromCode } from "../../backend/firebase";
+import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from "@react-navigation/native";
 
-export default function Tasks() {
+
+export default function Tasks({navigation}) {
+
+  const isFocused = useIsFocused();
+  async function fetchData(){
+    try {
+      const uid = await AsyncStorage.getItem('parentID');
+      
+      console.log("uuid: " +uid);
+      let taskList = await getAllTasks(uid);
+      console.log(taskList)
+      
+      setTaskItems(taskList); // setState inside useEffect will create an infinite loop. Causes firebase to query too many reads
+      //fetchData() called after navigating back from taskListm
+      
+
+    } catch (error) {
+      console.log("err: " + error)
+    }
+   }
+
+  //called when screen is open or when back on the screen
+  useEffect( () =>{
+    
+     fetchData();
+  }, [isFocused])
+      
+
+  
   const [task, setTask] = useState()
   const [taskItems , setTaskItems] = useState([]); //The initial value of taskItem state is an empty array
 
-  //onPress() of the button calls handleAddTask()
-  //task is a state. It is the string in textinput during the button press.
-  //taskItem is a state. It is the array of tasks.
-  const handleAddTask = () => {
-    Keyboard.dismiss(); //close the keyboard
-    setTaskItems([...taskItems, task]); //update taskItems array, previous taskItems array + task -when inserted
-    setTask(null); //Because value = {task} inside  TextInput, this clears the textinput.
-  }
 
   //onPress() of the Task component
-  const completeTask = (index) => {
-    let itemsCopy = [...taskItems]; //get all items in taskItems
-    itemsCopy.splice(index, 1); //removes the item at index from the array
-    setTaskItems(itemsCopy);
+  const completeTask = async (index) => {
+    let task = taskItems[index];
+    let result = await deleteTaskDB(task.id);
+    fetchData();
+  }
+
+  const goToTaskAdd = async () => {
+    const type = await AsyncStorage.getItem('type');
+    if(type === "parent"){
+      navigation.navigate('TaskAdd', {setTask: setTask , fetchData: fetchData}); //, updateTaskList: handleAddTask
+    }else{
+
+    }
+    
   }
 
   return (
     <View style={styles.container}>
-
+      <ScrollView>
       <View style={styles.taskWrapper}>
         <Text style={styles.sectionTitle}> Today's tasks</Text>
-
         <View style={styles.items}>
         {/** This is where the tasks will go! */}
         {
+          
           taskItems.map((item, index) => { //map takes a call back faction- if 2 parameter it returns value and index.
             /*When you are outputting an array of react component, each component needs a key that unique identify them- we use index- so react can track them overtime
             https://kentcdodds.com/blog/understanding-reacts-key-prop
             */
-
+           //if the array is empty, then the map won't run??? If there is atleast 1 task, then create the task.
+          
             return(
-              <TouchableOpacity key={index} onPress={() => completeTask(index)}>
-                <Task text={item}/>
+              <TouchableOpacity key={index} onPress={async () => {completeTask(index);}}>
+                <Task title={item.Task_Name} reward={item.Reward} note={item.Note} child={item.Child} date={item.Date}/>
               </TouchableOpacity>
-            )
+            ) 
           })
+          
         }
+        
         </View>
       </View>
-
-        {/* when keyboard opens-when TextInput is pressed-, it covers view. Keyboard avoiding view do not get covered, it moves with keyboard and kbview covers other views. We want the input box to move with keyboard  */}
-        {/*react native documentation - behavior*/}
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.writeTaskWrapper}
-          >
-            {/*onChangeText- callback when textinput's change. You type google. it calls at g, go, goo, goog, googl. the final state is "google" when you stop typing and press button- which gets the state at the correct time- "google". Changed text is passed as a string argument to the callback handler */}
-            {/** value={task}. When you type something in the textInput, it will be there even without value={task}. By itself, this doesn't do anything; however this is used to clear the box after pressing the button using handleAddTask() */}
-            {/** placeholder- initially "write a task". When you type, the write a task disappears */}
-            <TextInput style={styles.input} placeholder={'Write a task'} value={task} onChangeText={text => setTask(text)} />
-
-            {/** touchableopacity- button. Below is the styling for the button. */}
-            <TouchableOpacity onPress={ () => handleAddTask()}>
-              <View style={styles.addWrapper}>
-                <Text style={styles.addText}>+</Text>
-              </View>
-            </TouchableOpacity>
-        </KeyboardAvoidingView>
-
+      </ScrollView>
+      <Button style = {styles.writeTaskWrapper} title='+' onPress={ async ()=> {await goToTaskAdd(); }}/>
     </View>
 
   );
@@ -87,7 +107,7 @@ const styles = StyleSheet.create({
   },
   writeTaskWrapper: { //The textbox-TextInput- and the button-TouchableOpacity 
     position: 'absolute',
-    bottom: 60,
+    bottom: 20,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -118,19 +138,32 @@ const styles = StyleSheet.create({
 
 const Task = (props) => {
     
+  //update the tempDate variable with the date selected.
+  let tempDate = props.date;
+  tempDate = tempDate.toDate();
+  let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
+  let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
+  
+  //set the text under Date
 
     return (
-        <View style={styles.item}>
-            <View style  = {styles.itemLeft}>
-                <View style={styles.square}></View>
-                <Text style = {styles.itemText}>{props.text}</Text>
+        <View style={organizer.item}>
+            <View style  = {organizer.itemLeft}>
+                <TouchableOpacity style={organizer.square}></TouchableOpacity>
+                <View>
+                  <Text style = {{ ...organizer.itemText, ...organizer.title}}>{"Title: " + props.title}</Text>
+                  <Text style = {{...organizer.itemText, ...organizer.reward}}>{"Reward: " + props.reward}</Text>
+                  <Text style = {organizer.itemText}>{"Note " + props.note}</Text>
+                  <Text style = {organizer.itemText}>{"Child: " + props.child}</Text>
+                  <Text style = {{...organizer.itemText, ...organizer.time}}>{"Time: " + fDate + '\n' + fTime}</Text>
+                </View>
             </View>
-            <View style={styles.circular}></View>
+            <View style={organizer.circular}></View>
         </View>
     )
 }
 
-const organzier = StyleSheet.create({
+const organizer = StyleSheet.create({
     item: {
         backgroundColor: '#FFF',
         padding: 15,
@@ -154,8 +187,8 @@ const organzier = StyleSheet.create({
         marginRight: 15 //space between the button and text
     },
     itemText: {
-        maxWidth: '80%', //ensure the text for task won't push circle outside the screen
-
+        maxWidth: '100%', //ensure the text for task won't push circle outside the screen
+        
     },
     circular: {
         width: 12,
@@ -164,4 +197,17 @@ const organzier = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 5,
     },
+    title: {
+      color: 'blue'
+
+    },
+    reward: {
+      color: 'orange'
+    },
+    note: {
+
+    },
+    time: {
+      color: 'red'
+    }
 });

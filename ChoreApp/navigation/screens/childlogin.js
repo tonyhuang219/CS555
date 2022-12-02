@@ -1,91 +1,59 @@
-import React from "react"
-import { StyleSheet, Image, Text, View, ImageBackground } from "react-native"
+import React, { useState, useContext } from "react";
+import { StyleSheet, View, Dimensions, Text, Button } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { TextInput } from "react-native-paper";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getIDFromCode} from "../../backend/firebase";
+import { AuthContext } from "../AuthContext";
 
 export default function LoginPageChild() {
+
+  const {login}= useContext(AuthContext);
+  
+  
+  const [code, setCode] = useState("");
+  let storeIDFromCode = async (code) => {
+    try {
+      console.log("code: " + code)
+      const uid = await getIDFromCode(code);  
+      console.log("parentID: " + uid)
+      const items = [['parentID',uid], ["type", "child"]] //in typescript. const items: [string,string][] = [['parentID',"uid"], ["type", "parent"]]
+      await AsyncStorage.multiSet(
+        items
+      );
+      login();
+    } catch (error) {
+      // Error saving data
+    }
+  };
+
   return (
-    <View style={styles.LoginPageChild}>
-      <View style={styles.Group735}>
-        <View style={styles.Group757}>
-          <View style={{styles: Rectangle11, height: Dimensions.get("screen").width * 0.04 }} />
-        </View>
-        <View style={styles.Rectangle10} />
+    <>
+      <StatusBar />
+      <View style={styles.container}>
+        <TextInput
+          style={styles.textInput}
+          activeUnderlineColor="#A32638"
+          label="Code"
+          onChangeText={setCode}
+        />
+        <View style={{ height: Dimensions.get("screen").width * 0.04 }}></View>
+        <Button title="Log in" onPress={ async() => {await storeIDFromCode(code)}}/>
       </View>
-      <Text style={styles.Txt179}>Login</Text>
-    </View>
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  LoginPageChild: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    position: "relative",
-    backgroundColor: "rgba(255, 255, 255, 1)",
-    width: 390,
-    height: 844,
-  },
-  Group735: {
-    display: "flex",
-    flexDirection: "column",
+  container: {
+    flex: 2,
+    backgroundColor: "#fff",
     alignItems: "center",
-    position: "absolute",
-    top: 271,
-    none: "0px",
-    width: 367,
-    height: 184,
-  },
-  Group757: {
-    display: "flex",
-    flexDirection: "row",
-    marginBottom: 66,
-  },
-  Rectangle11: {
-    backgroundColor: "rgba(217,217,217,1)",
-    width: 85,
-    height: 85,
-    borderRadius: 15,
-    marginRight: 9,
-  },
-  Rectangle14: {
-    backgroundColor: "rgba(217,217,217,1)",
-    width: 85,
-    height: 85,
-    borderRadius: 15,
-    marginRight: 9,
-  },
-  Rectangle13: {
-    backgroundColor: "rgba(217,217,217,1)",
-    width: 85,
-    height: 85,
-    borderRadius: 15,
-    marginRight: 9,
-  },
-  Rectangle12: {
-    backgroundColor: "rgba(217,217,217,1)",
-    width: 85,
-    height: 85,
-    borderRadius: 15,
-  },
-
-  Rectangle10: {
-    backgroundColor: "rgba(217,217,217,1)",
-    width: 173,
-    height: 33,
-  },
-
-  Txt179: {
-    position: "absolute",
-    top: 422,
-    left: 103,
-    fontSize: 24,
-    fontFamily: "Inter, sans-serif",
-    fontWeight: "400",
-    color: "rgba(0,0,0,1)",
-    textAlign: "center",
     justifyContent: "center",
-    width: 172,
-    height: 34,
   },
-})
+  textInput: {
+    width: "80%",
+    marginBottom: 10,
+    backgroundColor: "transparent",
+  },
+});

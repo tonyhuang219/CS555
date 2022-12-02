@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { StyleSheet, View, Dimensions, Text, Button, ToastAndroid } from "react-native";
+
 
 // Screens
-import Tasks from './screens/Tasks';
+import Task from './screens/Tasks';
+import TaskAdd from './screens/taskAdd';
 import signup from './screens/signup';
 import SettingsScreen from './screens/SettingsScreen';
 import CalendarScreen from './screens/CalendarScreen';
@@ -17,13 +21,85 @@ const homeName = "Home";
 const detailsName = "Details";
 const settingsName = "Settings";
 const CalendarName = "Calendar";
+const TaskAddName = "Add Task";
 const AchievementName = "Achievement";
 const parentLogin = "Login demo";
 const childLogin = "Child Login demo";
 
 const Tab = createBottomTabNavigator();
 
-function MainContainer() {
+const TaskStack = createStackNavigator();
+
+const TaskNavigator = () => {
+  return(
+    <TaskStack.Navigator screenOptions={{headerShown:false}}>
+      <TaskStack.Screen name="Task" component= {Task}/>
+      <TaskStack.Screen name="TaskAdd" component= {TaskAdd}/>
+    </TaskStack.Navigator>
+  )
+}
+
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getUserType } from '../backend/firebase';
+
+let type = "parent";
+  //delete this
+  const auth = getAuth();
+  onAuthStateChanged(auth, ( user) => {
+    async function main(){
+      type= await getUserType(user.uid);
+    }
+    main();
+  })
+  //delete 
+
+
+export function AuthStack(){
+  //should be determined by login
+    return (<NavigationContainer>
+      <Tab.Navigator
+        initialRouteName={parentLogin}
+
+        tabBarOptions={{
+          activeTintColor: '#42bcf5',
+          inactiveTintColor: 'grey',
+          labelStyle: { paddingBottom: 10, fontSize: 10 },
+          style: { padding: 10, height: 70}
+        }}>
+
+        <Tab.Screen name={detailsName} component={signup} />
+        <Tab.Screen name={parentLogin} component={login} />
+        <Tab.Screen name={childLogin} component={childlogin} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
+
+
+export function ChildContainer() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        initialRouteName={homeName}
+        
+        tabBarOptions={{
+          activeTintColor: '#42bcf5',
+          inactiveTintColor: 'grey',
+          labelStyle: { paddingBottom: 10, fontSize: 10 },
+          style: { padding: 10, height: 70}
+        }}>
+
+        <Tab.Screen name={homeName} component={TaskNavigator} />
+        <Tab.Screen name={CalendarName} component={CalendarScreen} />
+        <Tab.Screen name={AchievementName} component={AchievementScreen} />
+        <Tab.Screen name={parentLogin} component={login} />
+        <Tab.Screen name={childLogin} component={childlogin} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export function MainContainer() {
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -59,7 +135,7 @@ function MainContainer() {
           style: { padding: 10, height: 70}
         }}>
 
-        <Tab.Screen name={homeName} component={Tasks} />
+        <Tab.Screen name={homeName} component={TaskNavigator} />
         <Tab.Screen name={detailsName} component={signup} />
         <Tab.Screen name={settingsName} component={SettingsScreen} />
         <Tab.Screen name={CalendarName} component={CalendarScreen} />
@@ -70,5 +146,3 @@ function MainContainer() {
     </NavigationContainer>
   );
 }
-
-export default MainContainer;
