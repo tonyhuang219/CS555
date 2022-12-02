@@ -180,6 +180,21 @@ export const getIDFromCode = async( code: string) =>{
     } 
 }
 
+export const getCodeFromId = async( id) =>{
+    let querySnapshot = await getDocs(collection(firestore, 'users'));
+    let code = "";
+    querySnapshot.forEach((doc) => {
+        if(doc.id  === id){
+            code =  doc.data().childlogin
+        }})
+    if (code === ""){
+        throw "invalid id"
+    }else{
+        return code;
+    } 
+}
+
+
 export const getIdFromEmail = async( email: string) =>{
     let querySnapshot = await getDocs(collection(firestore, 'users'));
     let id = "";
